@@ -8,7 +8,12 @@ int main () {
 
   arrayboard a = {};
   bitboards_to_arrayboard(&a);
-  print_arrayboard(&a);
+  // print_arrayboard(&a);
+
+  setup_window();
+  draw_arrayboard(&a);
+  getch();
+  endwin();
 
   return 0;
 }

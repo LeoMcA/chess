@@ -1,3 +1,6 @@
 #include <ncurses.h>
 
-void draw_bitboard ();
+#include "types.h"
+
+void setup_window ();
+void draw_arrayboard (arrayboard *a);

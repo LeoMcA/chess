@@ -32,19 +32,22 @@ void print_bitboard (bitboard b) {
 }
 
 void print_arrayboard (arrayboard *a) {
+  printf("  a b c d e f g h\n");
   for (int y = 7; y >= 0; y--) {
+    printf("%d ", y + 1);
     for (int x = 0; x < 8; x++) {
-      piece piece = (*a)[y][x].piece;
-      color piece_color = (*a)[y][x].color;
-      if (piece != none) {
+      square s = (*a)[y][x];
+      if (s.piece != none) {
         printf("\xe2\x99");
-        putchar('\x93' + piece + piece_color * 6);
+        putchar('\x93' + s.piece + s.color * 6);
         putchar(' ');
+      } else {
+        printf("  ");
       }
     }
-    printf("\n");
+    printf("%d \n", y + 1);
   }
-
+  printf("  a b c d e f g h\n");
 }
 
 void bitboards_to_arrayboard (arrayboard *a) {

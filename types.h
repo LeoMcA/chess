@@ -1,3 +1,6 @@
+#ifndef _TYPES_H_
+#define _TYPES_H_
+
 #include <stdint.h>
 
 typedef uint64_t bitboard;
@@ -36,3 +39,5 @@ extern bitboard black_knights;
 extern bitboard black_pawns;
 
 extern bitboard *bitboards[12];
+
+#endif
