@@ -2,6 +2,9 @@
 
 void setup_window () {
   initscr();
+  clear();
+  noecho();
+  cbreak();
   start_color();
   init_pair(1, COLOR_BLACK, COLOR_WHITE);
   init_pair(2, COLOR_WHITE, COLOR_BLACK);
@@ -35,4 +38,21 @@ void draw_arrayboard (arrayboard *a) {
   }
   printw("    a  b  c  d  e  f  g  h    \n");
   refresh();
+}
+
+void setup_mouse () {
+  keypad(stdscr, TRUE);
+  mousemask(BUTTON1_CLICKED, NULL);
+  MEVENT event;
+  while (1) {
+    int ch = getch();
+    if (ch == KEY_MOUSE) {
+      if (getmouse(&event) == OK) {
+        if (event.bstate & BUTTON1_CLICKED) {
+          addch('`' + event.x / 3);
+          printw("%d\n", 9 - event.y);
+        }
+      }
+    }
+  }
 }

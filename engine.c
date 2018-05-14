@@ -12,6 +12,7 @@ int main () {
 
   setup_window();
   draw_arrayboard(&a);
+  setup_mouse();
   getch();
   endwin();
 
