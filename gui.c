@@ -57,13 +57,21 @@ void setup_mouse (arrayboard *a) {
           int y = 8 - event.y;
           // addch('a' + x);
           // printw("%d\n", y + 1);
-          if (x_prev == -1) {
-            x_prev = x;
-            y_prev = y;
+          if (0 <= x && x < 8 && 0 <= y && y < 8) {
+            if (x_prev == -1) {
+              x_prev = x;
+              y_prev = y;
+            } else {
+              if (valid_move(a, x_prev, y_prev, x, y)) {
+                update_boards(a, x_prev, y_prev, x, y);
+                draw_arrayboard(a);
+              } else {
+                printw("invalid move\n");
+              }
+              x_prev = -1;
+            }
           } else {
-            update_boards(a, x_prev, y_prev, x, y);
             x_prev = -1;
-            draw_arrayboard(a);
           }
         }
       }

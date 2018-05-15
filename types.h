@@ -18,6 +18,7 @@ void print_arrayboard (arrayboard *a);
 void bitboards_to_arrayboard (arrayboard *a);
 bitboard *piece_to_bitboard (piece piece, color color);
 void update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
+int valid_move (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
 
 #define KING    (bitboard) 1           << 3
 #define QUEEN   (bitboard) 1           << 4

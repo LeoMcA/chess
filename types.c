@@ -81,3 +81,11 @@ void update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_
   (*a)[end_y][end_x] = (square){ s->color, s->piece };
   *s = (square){ .piece = none };
 }
+
+int valid_move (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
+  square *start = &(*a)[start_y][start_x];
+  square *end = &(*a)[end_y][end_x];
+  if (start->piece == none) return 0;
+  if (end->piece != none && start->color == end->color) return 0;
+  return 1;
+}
