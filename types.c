@@ -53,7 +53,7 @@ void print_arrayboard (arrayboard *a) {
 void bitboards_to_arrayboard (arrayboard *a) {
   for (color color = 0; color < 2; color++) {
     for (piece piece = 1; piece < 7; piece++) {
-      bitboard b = *bitboards[piece - 1 + color * 6];
+      bitboard b = *piece_to_bitboard(piece, color);
       int x = 7;
       int y = 7;
       while (b != 0) {
@@ -70,4 +70,14 @@ void bitboards_to_arrayboard (arrayboard *a) {
       }
     }
   }
+}
+
+bitboard *piece_to_bitboard (piece piece, color color) {
+  return bitboards[piece - 1 + color * 6];
+}
+
+void update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
+  square *s = &(*a)[start_y][start_x];
+  (*a)[end_y][end_x] = (square){ s->color, s->piece };
+  *s = (square){ .piece = none };
 }
