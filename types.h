@@ -17,8 +17,8 @@ void print_binary (bitboard b);
 void print_arrayboard (arrayboard *a);
 void bitboards_to_arrayboard (arrayboard *a);
 bitboard *piece_to_bitboard (piece piece, color color);
-void update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
-int valid_move (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
+int update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
+int clickable (arrayboard *a, int x, int y);
 
 #define KING    (bitboard) 1           << 3
 #define QUEEN   (bitboard) 1           << 4
@@ -26,6 +26,8 @@ int valid_move (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
 #define BISHOPS (bitboard)(1 << 3 | 1) << 2
 #define KNIGHTS (bitboard)(1 << 5 | 1) << 1
 #define PAWNS   (bitboard) 255         << 8
+
+#define PLAYER_COLOR white
 
 extern bitboard white_king;
 extern bitboard white_queen;

@@ -76,16 +76,25 @@ bitboard *piece_to_bitboard (piece piece, color color) {
   return bitboards[piece - 1 + color * 6];
 }
 
-void update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
-  square *s = &(*a)[start_y][start_x];
-  (*a)[end_y][end_x] = (square){ s->color, s->piece };
-  *s = (square){ .piece = none };
-}
-
-int valid_move (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
+int update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
   square *start = &(*a)[start_y][start_x];
   square *end = &(*a)[end_y][end_x];
+  if (start == end) return 2;
   if (start->piece == none) return 0;
   if (end->piece != none && start->color == end->color) return 0;
+
+  *end = (square){ start->color, start->piece };
+  *start = (square){ .piece = none };
+
   return 1;
+}
+
+int clickable (arrayboard *a, int x, int y) {
+  if (0 <= x && x < 8 && 0 <= y && y < 8) {
+    square s = (*a)[y][x];
+    if (s.piece != none && s.color == PLAYER_COLOR) {
+      return 1;
+    }
+  }
+  return 0;
 }
