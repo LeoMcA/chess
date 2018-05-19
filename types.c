@@ -22,6 +22,8 @@ bitboard *bitboards[12] = {
   &black_king, &black_queen, &black_rooks, &black_bishops, &black_knights, &black_pawns
 };
 
+arrayboard_t arrayboard = {};
+
 void print_bitboard (bitboard b) {
   // https://stackoverflow.com/a/35926790
   int i = CHAR_BIT * sizeof(bitboard);
@@ -31,12 +33,12 @@ void print_bitboard (bitboard b) {
   putchar('\n');
 }
 
-void print_arrayboard (arrayboard *a) {
+void print_arrayboard () {
   printf("  a b c d e f g h\n");
   for (int y = 7; y >= 0; y--) {
     printf("%d ", y + 1);
     for (int x = 0; x < 8; x++) {
-      square s = (*a)[y][x];
+      square s = arrayboard[y][x];
       if (s.piece != none) {
         printf("\xe2\x99");
         putchar('\x93' + s.piece + s.color * 6);
@@ -50,7 +52,7 @@ void print_arrayboard (arrayboard *a) {
   printf("  a b c d e f g h\n");
 }
 
-void bitboards_to_arrayboard (arrayboard *a) {
+void bitboards_to_arrayboard () {
   for (color color = 0; color < 2; color++) {
     for (piece piece = 1; piece < 7; piece++) {
       bitboard b = *piece_to_bitboard(piece, color);
@@ -58,7 +60,7 @@ void bitboards_to_arrayboard (arrayboard *a) {
       int y = 7;
       while (b != 0) {
         if (b & 1) {
-          (*a)[y][x] = (square){ color, piece };
+          arrayboard[y][x] = (square){ color, piece };
         }
         b >>= 1;
         if (x == 0) {
@@ -76,9 +78,9 @@ bitboard *piece_to_bitboard (piece piece, color color) {
   return bitboards[piece - 1 + color * 6];
 }
 
-int update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y) {
-  square *start = &(*a)[start_y][start_x];
-  square *end = &(*a)[end_y][end_x];
+int update_boards (int start_x, int start_y, int end_x, int end_y) {
+  square *start = &arrayboard[start_y][start_x];
+  square *end = &arrayboard[end_y][end_x];
   if (start == end) return 2;
   if (start->piece == none) return 0;
   if (end->piece != none && start->color == end->color) return 0;
@@ -89,9 +91,9 @@ int update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y
   return 1;
 }
 
-int clickable (arrayboard *a, int x, int y) {
+int clickable (int x, int y) {
   if (0 <= x && x < 8 && 0 <= y && y < 8) {
-    square s = (*a)[y][x];
+    square s = arrayboard[y][x];
     if (s.piece != none && s.color == PLAYER_COLOR) {
       return 1;
     }

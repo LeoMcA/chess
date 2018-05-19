@@ -11,14 +11,14 @@ typedef struct {
   color color : 1;
   piece piece : 3;
 } square;
-typedef square arrayboard[8][8];
+typedef square arrayboard_t[8][8];
 
 void print_binary (bitboard b);
-void print_arrayboard (arrayboard *a);
-void bitboards_to_arrayboard (arrayboard *a);
+void print_arrayboard ();
+void bitboards_to_arrayboard ();
 bitboard *piece_to_bitboard (piece piece, color color);
-int update_boards (arrayboard *a, int start_x, int start_y, int end_x, int end_y);
-int clickable (arrayboard *a, int x, int y);
+int update_boards (int start_x, int start_y, int end_x, int end_y);
+int clickable (int x, int y);
 
 #define KING    (bitboard) 1           << 3
 #define QUEEN   (bitboard) 1           << 4
@@ -44,5 +44,7 @@ extern bitboard black_knights;
 extern bitboard black_pawns;
 
 extern bitboard *bitboards[12];
+
+extern arrayboard_t arrayboard;
 
 #endif
