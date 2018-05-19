@@ -1,5 +1,7 @@
 #include "gui.h"
 
+guiboard_t guiboard = {};
+
 int mouse_x_prev = -1;
 int mouse_y_prev = -1;
 
@@ -16,29 +18,49 @@ void setup_window () {
   init_pair(4, COLOR_WHITE, COLOR_BLUE);
 }
 
+void setup_board () {
+  for (int y = 7; y >= 0; y--) {
+    for (int x = 0; x < 8; x++) {
+      guisquare_t *s = &guiboard[y][x];
+      s->square_color = y % 2 == x % 2;
+    }
+  }
+}
+
+void arrayboard_to_guiboard () {
+  for (int y = 7; y >= 0; y--) {
+    for (int x = 0; x < 8; x++) {
+      square as = arrayboard[y][x];
+      guisquare_t *gs = &guiboard[y][x];
+      gs->piece = as.piece;
+      gs->piece_color = as.color;
+    }
+  }
+}
+
 void draw_board_with_highlight (int x_highlight, int y_highlight) {
+  arrayboard_to_guiboard();
   clear();
   printw("    a  b  c  d  e  f  g  h    \n");
   for (int y = 7; y >= 0; y--) {
     printw(" %d ", y + 1);
     for (int x = 0; x < 8; x++) {
-      square s = arrayboard[y][x];
+      guisquare_t s = guiboard[y][x];
       int unicode_offset;
       if (x != x_highlight || y != y_highlight) {
-        color sc = y % 2 == x % 2;
-        if (sc) {
-          attron(COLOR_PAIR(2));
-        } else {
+        if (s.square_color == white) {
           attron(COLOR_PAIR(1));
+        } else {
+          attron(COLOR_PAIR(2));
         }
-        unicode_offset = s.piece + (s.color != sc) * 6;
+        unicode_offset = s.piece + (s.piece_color != s.square_color) * 6;
       } else {
-        if (s.color == black) {
+        if (s.piece_color == black) {
           attron(COLOR_PAIR(3));
         } else {
           attron(COLOR_PAIR(4));
         }
-        unicode_offset = s.piece + (s.color == white) * 6;
+        unicode_offset = s.piece + !s.piece_color * 6;
       }
       if (s.piece != none) {
         printw(" ");
@@ -60,7 +82,7 @@ void draw_board_with_highlight (int x_highlight, int y_highlight) {
   refresh();
 }
 
-void draw_arrayboard () {
+void draw_board () {
   draw_board_with_highlight(-1, -1);
 }
 
@@ -99,7 +121,7 @@ void mouse_clicked (MEVENT *e) {
     } else {
       int status = update_boards(mouse_x_prev, mouse_y_prev, x, y);
       if (status) {
-        draw_arrayboard();
+        draw_board();
         mouse_x_prev = -1;
       } else {
         printw("invalid move\n");
@@ -107,6 +129,6 @@ void mouse_clicked (MEVENT *e) {
     }
   } else {
     mouse_x_prev = -1;
-    draw_arrayboard();
+    draw_board();
   }
 }

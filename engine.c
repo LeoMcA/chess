@@ -8,7 +8,8 @@ int main () {
 
   bitboards_to_arrayboard();
   setup_window();
-  draw_arrayboard();
+  setup_board();
+  draw_board();
   setup_mouse();
   getch();
   endwin();
